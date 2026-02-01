@@ -6,14 +6,12 @@ async function token(req, res) {
   try {
     const { email, password } = req.body;
 
-    // validação mínima (edital pede 400 quando dados incorretos)
     if (!email || !password) {
       return res.status(400).json({ message: "Email e password são obrigatórios." });
     }
 
     const user = await User.findOne({ where: { email } });
 
-    // se não achou usuário, também 400 (pra não revelar se existe ou não)
     if (!user) {
       return res.status(400).json({ message: "Credenciais inválidas." });
     }

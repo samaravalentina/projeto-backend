@@ -13,16 +13,11 @@ function mimeToExt(mime) {
 }
 
 function stripBase64Prefix(content) {
-  // aceita "data:image/png;base64,AAAA" OU só "AAAA"
   const idx = content.indexOf("base64,");
   if (idx !== -1) return content.slice(idx + "base64,".length);
   return content;
 }
 
-/**
- * Salva uma imagem base64 em /uploads/products/:productId/
- * Retorna o path RELATIVO para salvar no banco (ex: /uploads/products/10/abc.png)
- */
 async function saveProductBase64Image({ productId, type, content }) {
   const ext = mimeToExt(type);
   if (!ext) {
@@ -47,7 +42,6 @@ async function saveProductBase64Image({ productId, type, content }) {
     throw err;
   }
 
-  // (opcional) validação simples: evita salvar arquivo vazio
   if (!buffer || buffer.length < 20) {
     const err = new Error("Imagem vazia ou base64 inválido.");
     err.statusCode = 400;
@@ -56,7 +50,6 @@ async function saveProductBase64Image({ productId, type, content }) {
 
   await fs.writeFile(fileAbsPath, buffer);
 
-  // path relativo (mais portátil) — começa com "/uploads/..."
   const relativePath = path
     .join("/uploads", "products", String(productId), filename)
     .replaceAll("\\", "/");
@@ -68,7 +61,6 @@ async function deleteFileIfExists(absPath) {
   try {
     await fs.unlink(absPath);
   } catch (_) {
-    // ignora
   }
 }
 

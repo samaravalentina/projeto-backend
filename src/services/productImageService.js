@@ -1,7 +1,6 @@
-const { ProductImage } = require("../models"); // ajuste conforme seu index de models
+const { ProductImage } = require("../models");
 
 async function createProductImages({ productId, images, transaction }) {
-  // images: [{ path, enabled }]
   if (!images?.length) return [];
 
   const payload = images.map((img) => ({

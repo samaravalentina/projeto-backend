@@ -1,4 +1,3 @@
-// src/middleware/auth.js
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
@@ -21,7 +20,7 @@ module.exports = (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, secret);
-    req.user = payload; // opcional: usar depois
+    req.user = payload;
     return next();
   } catch (err) {
     return res.status(400).json({ message: "Token inválido ou expirado." });

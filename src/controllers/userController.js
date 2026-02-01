@@ -1,4 +1,3 @@
-// src/controllers/userController.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
@@ -10,7 +9,6 @@ function pickUserPublic(userInstance) {
 }
 
 module.exports = {
-  // GET /v1/user/:id
   async getById(req, res) {
     try {
       const { id } = req.params;
@@ -27,7 +25,6 @@ module.exports = {
     }
   },
 
-  // POST /v1/user
   async create(req, res) {
     try {
       const { firstname, surname, email, password, confirmPassword } = req.body;
@@ -40,7 +37,6 @@ module.exports = {
         return res.status(400).json({ message: "confirmPassword não confere com password." });
       }
 
-      // checa se email já existe
       const exists = await User.findOne({ where: { email } });
       if (exists) {
         return res.status(400).json({ message: "E-mail já cadastrado." });
@@ -70,13 +66,11 @@ module.exports = {
     }
   },
 
-  // PUT /v1/user/:id  (JWT)
   async update(req, res) {
     try {
       const { id } = req.params;
       const { firstname, surname, email } = req.body;
 
-      // valida payload (pelo escopo, se vier inválido: 400)
       if (firstname === undefined && surname === undefined && email === undefined) {
         return res.status(400).json({ message: "Envie ao menos um campo para atualizar (firstname, surname, email)." });
       }
@@ -89,15 +83,12 @@ module.exports = {
       if (email !== undefined) user.email = email;
 
       await user.save();
-
-      // 204 No Content
       return res.status(204).send();
     } catch (err) {
       return res.status(500).json({ message: "Erro ao atualizar usuário.", error: err.message });
     }
   },
 
-  // DELETE /v1/user/:id (JWT)
   async remove(req, res) {
     try {
       const { id } = req.params;
@@ -106,15 +97,12 @@ module.exports = {
       if (!user) return res.status(404).json({ message: "Usuário não encontrado." });
 
       await user.destroy();
-
-      // 204 No Content
       return res.status(204).send();
     } catch (err) {
       return res.status(500).json({ message: "Erro ao deletar usuário.", error: err.message });
     }
   },
 
-  // POST /v1/user/token
   async token(req, res) {
     try {
       const { email, password } = req.body;

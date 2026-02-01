@@ -1,4 +1,3 @@
-// src/routes/productRoutes.js
 "use strict";
 
 const express = require("express");
@@ -7,16 +6,13 @@ const productController = require("../controllers/productController");
 
 const router = express.Router();
 
-// Público
 router.get("/v1/product/search", productController.search);
 router.get("/v1/product/:id", productController.show);
 
-// Protegido
 router.post("/v1/product", auth, productController.create);
 router.put("/v1/product/:id", auth, productController.update);
 router.delete("/v1/product/:id", auth, productController.remove);
 
-// remover imagem do produto (Protegido)
 router.delete("/v1/product/:id/image/:imageId", auth, productController.removeImage);
 
 module.exports = router;

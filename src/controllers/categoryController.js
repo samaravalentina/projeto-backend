@@ -3,9 +3,6 @@
 const { Op } = require("sequelize");
 const Category = require("../models/category");
 
-/**
- * Criar categoria
- */
 async function create(req, res) {
   try {
     const { name, slug, use_in_menu } = req.body;
@@ -32,9 +29,6 @@ async function create(req, res) {
   }
 }
 
-/**
- * Buscar categoria por ID
- */
 async function getById(req, res) {
   try {
     const { id } = req.params;
@@ -51,9 +45,6 @@ async function getById(req, res) {
   }
 }
 
-/**
- * Buscar categorias (com filtro + paginação)
- */
 async function search(req, res) {
   try {
     const { name, slug, use_in_menu, page = 1, limit = 12 } = req.query;
@@ -85,9 +76,6 @@ async function search(req, res) {
   }
 }
 
-/**
- * Atualizar categoria
- */
 async function update(req, res) {
   try {
     const { id } = req.params;
@@ -118,9 +106,6 @@ async function update(req, res) {
   }
 }
 
-/**
- * Remover categoria
- */
 async function remove(req, res) {
   try {
     const { id } = req.params;

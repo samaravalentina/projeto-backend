@@ -48,7 +48,7 @@ function normalizeProduct(req, productInstance) {
       shape: op.shape,
       radius: op.radius,
       type: op.type,
-      values: op.values, // se no seu model estiver string, ok
+      values: op.values,
     })),
   };
 }
@@ -83,8 +83,6 @@ async function saveBase64Image(productId, type, content) {
 async function unlinkIfExists(relPath) {
   if (!relPath) return;
 
-  // relPath exemplo: /uploads/products/9/abc.png
-  // se for URL externa, não tenta apagar
   if (/^https?:\/\//i.test(relPath)) return;
 
   const projectRoot = path.resolve(__dirname, "..", "..");
@@ -98,7 +96,7 @@ async function unlinkIfExists(relPath) {
 }
 
 module.exports = {
-  // GET /v1/product/search?limit=12&page=1&match=tenis&fields=name,price,images
+
   async search(req, res) {
     try {
       let { limit = "12", page = "1", match, fields } = req.query;
@@ -113,13 +111,10 @@ module.exports = {
 
       if (match && String(match).trim()) {
         const term = `%${String(match).trim()}%`;
-        // sem Op aqui -> usa sintaxe do sequelize diretamente:
-        where["$or"] = undefined; // só pra evitar eslint em projetos
-        where[sequelize.Op?.or || "or"] = undefined; // fallback
-        // Como você não usa Op no resto, vamos usar Sequelize.Op de forma segura:
+        where["$or"] = undefined;
+        where[sequelize.Op?.or || "or"] = undefined;
       }
 
-      // ✅ forma segura (sem depender de import Op)
       const Sequelize = require("sequelize");
       if (match && String(match).trim()) {
         const term = `%${String(match).trim()}%`;
@@ -172,7 +167,6 @@ module.exports = {
     }
   },
 
-  // GET /v1/product/:id
   async show(req, res) {
     try {
       const { id } = req.params;
@@ -193,7 +187,6 @@ module.exports = {
     }
   },
 
-  // POST /v1/product
   async create(req, res) {
     const writtenFiles = [];
     const t = await sequelize.transaction();
@@ -244,7 +237,6 @@ module.exports = {
         { transaction: t }
       );
 
-      // categorias
       if (Array.isArray(categoryIds) && categoryIds.length > 0) {
         const categories = await Category.findAll({
           where: { id: categoryIds },
@@ -263,7 +255,6 @@ module.exports = {
         await product.setCategories(categoryIds, { transaction: t });
       }
 
-      // imagens base64
       if (Array.isArray(images) && images.length > 0) {
         for (const img of images) {
           if (!img?.type || !img?.content) {
@@ -283,7 +274,6 @@ module.exports = {
         }
       }
 
-      // opções (create simples)
       if (Array.isArray(options) && options.length > 0) {
         for (const o of options) {
           if (!o?.title) continue;
@@ -322,7 +312,6 @@ module.exports = {
     }
   },
 
-  // PUT /v1/product/:id -> 204 No Content (escopo)
   async update(req, res) {
     const writtenFiles = [];
     const t = await sequelize.transaction();
@@ -337,7 +326,6 @@ module.exports = {
         return res.status(404).json({ message: "Produto não encontrado." });
       }
 
-      // básicos
       if (body.enabled !== undefined) product.enabled = Boolean(body.enabled);
       if (body.name !== undefined) product.name = body.name;
       if (body.slug !== undefined) product.slug = body.slug;
@@ -364,7 +352,6 @@ module.exports = {
 
       await product.save({ transaction: t });
 
-      // categorias
       const categoryIds = body.category_ids ?? body.categoryIds;
       if (Array.isArray(categoryIds)) {
         const categories = await Category.findAll({
@@ -384,10 +371,7 @@ module.exports = {
         await product.setCategories(categoryIds, { transaction: t });
       }
 
-      // ===== IMAGES (formato do escopo) =====
       const imagesPayload = Array.isArray(body.images) ? body.images : [];
-
-      // deletar
       const toDeleteIds = imagesPayload
         .filter((img) => img && img.id && img.deleted === true)
         .map((img) => Number(img.id))
@@ -405,7 +389,6 @@ module.exports = {
         }
       }
 
-      // atualizar existentes
       const toUpdate = imagesPayload.filter(
         (img) => img && img.id && img.content && img.deleted !== true
       );
@@ -422,14 +405,12 @@ module.exports = {
 
         const content = String(img.content);
 
-        // URL externa
         if (/^https?:\/\//i.test(content)) {
           dbImg.path = content;
           await dbImg.save({ transaction: t });
           continue;
         }
 
-        // base64 precisa type
         if (!img.type) {
           await t.rollback();
           return res.status(400).json({
@@ -446,7 +427,6 @@ module.exports = {
         await dbImg.save({ transaction: t });
       }
 
-      // adicionar novas
       const toAdd = imagesPayload.filter((img) => img && !img.id && img.type && img.content);
 
       for (const img of toAdd) {
@@ -459,10 +439,8 @@ module.exports = {
         );
       }
 
-      // ===== OPTIONS (formato do escopo) =====
       const optionsPayload = Array.isArray(body.options) ? body.options : [];
 
-      // delete
       const optDeleteIds = optionsPayload
         .filter((o) => o && o.id && o.deleted === true)
         .map((o) => Number(o.id))
@@ -475,7 +453,6 @@ module.exports = {
         });
       }
 
-      // update
       const optUpdate = optionsPayload.filter((o) => o && o.id && o.deleted !== true);
       for (const o of optUpdate) {
         const optionId = Number(o.id);
@@ -499,7 +476,6 @@ module.exports = {
         await dbOpt.save({ transaction: t });
       }
 
-      // create
       const optCreate = optionsPayload.filter((o) => o && !o.id && o.title);
       for (const o of optCreate) {
         await ProductOption.create(
@@ -527,7 +503,6 @@ module.exports = {
     }
   },
 
-  // DELETE /v1/product/:id -> 204
   async remove(req, res) {
     const t = await sequelize.transaction();
 
@@ -562,7 +537,6 @@ module.exports = {
     }
   },
 
-  // DELETE /v1/product/:id/image/:imageId -> 204
   async removeImage(req, res) {
     const t = await sequelize.transaction();
 

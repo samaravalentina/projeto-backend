@@ -22,7 +22,6 @@ function parseUseInMenu(value) {
 }
 
 function parseFields(fields) {
-  // whitelist de campos permitidos pelo escopo
   const allowed = new Set(["id", "name", "slug", "use_in_menu"]);
   if (!fields) return undefined;
 
@@ -44,7 +43,6 @@ async function search(query) {
   const where = {};
   if (useInMenu !== undefined) where.use_in_menu = useInMenu;
 
-  // Se limit = -1, retorna tudo
   const findOptions = {
     where,
     order: [["id", "ASC"]],

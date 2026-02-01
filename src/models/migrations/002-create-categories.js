@@ -1,14 +1,5 @@
 "use strict";
 
-/**
- * Requisito 02 - Criar a tabela de categorias
- * columns:
- *  - id (PK, autoIncrement)
- *  - name (STRING, obrigatório)
- *  - slug (STRING, obrigatório)
- *  - use_in_menu (BOOLEAN, opcional, default 0)
- *  - created_at / updated_at (timestamps)
- */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("categories", {
@@ -32,7 +23,7 @@ module.exports = {
       use_in_menu: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue: false, // equivalente a 0
+        defaultValue: false,
       },
 
       created_at: {
@@ -48,7 +39,6 @@ module.exports = {
       },
     });
 
-    // Índices (recomendado)
     await queryInterface.addIndex("categories", ["slug"], {
       unique: true,
       name: "categories_slug_unique",

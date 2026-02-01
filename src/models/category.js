@@ -28,7 +28,7 @@ const Category = sequelize.define(
   },
   {
     tableName: "categories",
-    underscored: true, // created_at, updated_at
+    underscored: true,
     timestamps: true,
   }
 );
