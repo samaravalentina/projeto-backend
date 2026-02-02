@@ -92,30 +92,23 @@ Estrutura do Projeto
 
 src/
  ├─ config/
- │   ├─ database.js
- │   ├─ migrate.js
- │   └─ swagger.js
+ │   ├─ database.js        # Conexão com banco
+ │   ├─ migrate.js         # Executa migrations
+ │   └─ swagger.js         # Configuração Swagger
  │
- ├─ controllers/
+ ├─ controllers/           # Entrada e saída de dados
  │   ├─ userController.js
  │   ├─ categoryController.js
  │   └─ productController.js
  │
- ├─ docs/
+ ├─ docs/                  # Arquivos auxiliares
  │   └─ api.js
  │
  ├─ middleware/
- │   └─ auth.js
+ │   └─ auth.js            # Validação JWT
  │
  ├─ models/
- │   ├─ migrations/
- │   │   ├─ 001-create-users.js
- │   │   ├─ 002-create-categories.js
- │   │   ├─ 003-create-products.js
- │   │   ├─ 004-create-product-images.js
- │   │   ├─ 005-create-product-options.js
- │   │   └─ 006-create-product-categories.js
- │   │
+ │   ├─ migrations/        # Scripts de criação de tabelas
  │   ├─ associations.js
  │   ├─ index.js
  │   ├─ user.js
@@ -124,15 +117,16 @@ src/
  │   ├─ productImage.js
  │   └─ productOption.js
  │
- ├─ routes/
+ ├─ routes/                # Endpoints da API
  │   ├─ userRoutes.js
  │   ├─ categoryRoutes.js
  │   └─ productRoutes.js
  │
- ├─ services/
+ ├─ services/              # Regras de negócio
  │
- ├─ app.js
- └─ server.js
+ ├─ app.js                 # Configuração Express
+ └─ server.js              # Inicialização servidor
+
 
 📡 Endpoints Principais
 
