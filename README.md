@@ -89,6 +89,7 @@ Iniciar servidor
 npm run dev
 
 Estrutura do Projeto
+
 src/
  ├─ config/
  │   ├─ database.js
