@@ -125,8 +125,8 @@ src/
  └─ server.js
 ```
 
-📡 Endpoints Principais
-
+## 📡 Endpoints Principais
+```
 Usuário
 Método	Rota
 POST	/v1/user
@@ -150,6 +150,7 @@ GET	/v1/product/:id
 POST	/v1/product
 PUT	/v1/product/:id
 DELETE	/v1/product/:id
+```
 🧠 Arquitetura
 
 Padrão MVC + Services:
