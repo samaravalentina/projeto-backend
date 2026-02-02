@@ -88,45 +88,42 @@ node src/config/migrate.js
 Iniciar servidor
 npm run dev
 
-Estrutura do Projeto
+## Estrutura do Projeto
 
+```
 src/
  ├─ config/
- │   ├─ database.js        # Conexão com banco
- │   ├─ migrate.js         # Executa migrations
- │   └─ swagger.js         # Configuração Swagger
+ │   ├─ database.js
+ │   ├─ migrate.js
+ │   └─ swagger.js
  │
- ├─ controllers/           # Entrada e saída de dados
+ ├─ controllers/
  │   ├─ userController.js
  │   ├─ categoryController.js
  │   └─ productController.js
  │
- ├─ docs/                  # Arquivos auxiliares
+ ├─ docs/
  │   └─ api.js
  │
  ├─ middleware/
- │   └─ auth.js            # Validação JWT
+ │   └─ auth.js
  │
  ├─ models/
- │   ├─ migrations/        # Scripts de criação de tabelas
- │   ├─ associations.js
- │   ├─ index.js
+ │   ├─ migrations/
  │   ├─ user.js
  │   ├─ category.js
  │   ├─ product.js
- │   ├─ productImage.js
- │   └─ productOption.js
  │
- ├─ routes/                # Endpoints da API
+ ├─ routes/
  │   ├─ userRoutes.js
  │   ├─ categoryRoutes.js
  │   └─ productRoutes.js
  │
- ├─ services/              # Regras de negócio
+ ├─ services/
  │
- ├─ app.js                 # Configuração Express
- └─ server.js              # Inicialização servidor
-
+ ├─ app.js
+ └─ server.js
+```
 
 📡 Endpoints Principais
 
