@@ -1,64 +1,92 @@
-Projeto Backend API
+# Projeto Backend API
 
-API REST desenvolvida em Node.js + Express como projeto prático do curso Geração Tech 3.0.
-O objetivo foi construir uma API completa com autenticação, CRUD, documentação e boas práticas de organização de código.
+API REST desenvolvida em **Node.js + Express** para gerenciamento de **Usuários, Categorias e Produtos**, com autenticação JWT, upload de imagens e documentação interativa via Swagger.
 
-Tecnologias Utilizadas
+Projeto desenvolvido individualmente como prática de Back-end no programa **Geração Tech 3.0**.
 
-Node.js
+---
 
-Express
+## 🚀 Tecnologias Utilizadas
 
-Sequelize
+- Node.js
+- Express
+- Sequelize
+- MySQL / MariaDB
+- JWT (JSON Web Token)
+- Swagger
+- Nodemon
+- Dotenv
 
-MySQL / SQLite (dependendo do ambiente)
+---
 
-JWT (JSON Web Token)
+## 📌 Funcionalidades
 
-Swagger (Documentação da API)
+### Usuário
+- Criar usuário
+- Buscar usuário por ID
+- Atualizar usuário (com token)
+- Deletar usuário (com token)
+- Gerar token JWT
 
-Dotenv
+### Categoria
+- Criar categoria (com token)
+- Listar categorias
+- Buscar categoria por ID
+- Atualizar categoria (com token)
+- Deletar categoria (com token)
 
-Nodemon
+### Produto
+- Criar produto (com token)
+- Listar produtos
+- Buscar produto por ID
+- Atualizar produto (com token)
+- Deletar produto (com token)
+- Upload de imagens
+- Remoção de imagens
 
-Funcionalidades
-Usuários
+---
 
-Criar usuário
+## 🔐 Autenticação
 
-Buscar usuário por ID
+A API utiliza **JWT (JSON Web Token)**.
 
-Atualizar usuário
+Fluxo:
+1. Criar usuário
+2. Gerar token em `/v1/user/token`
+3. Clicar em **Authorize** no Swagger
+4. Inserir:
 
-Deletar usuário
 
-Gerar token JWT
+---
 
-Categorias
+## 📚 Documentação da API
 
-Criar categoria
+Swagger disponível em:http://localhost:3000/docs
 
-Buscar categoria por ID
+---
 
-Listar categorias
+## ⚙️ Como Rodar o Projeto
 
-Atualizar categoria
+### 1. Clonar o repositório
 
-Deletar categoria
+git clone https://github.com/seuusuario/projeto-backend.git
 
-Produtos
+Instalar dependências
+npm install
 
-Criar produto
+Criar arquivo .env
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=123456
+DB_NAME=backend_db
+JWT_SECRET=segredo_super
 
-Buscar produto por ID
+Rodar migrations
+node src/config/migrate.js
 
-Listar produtos
-
-Atualizar produto
-
-Deletar produto
-
-Upload e remoção de imagens
+Iniciar servidor
+npm run dev
 
 Estrutura do Projeto
 src/
@@ -68,26 +96,71 @@ src/
  │   └─ swagger.js
  │
  ├─ controllers/
+ │   ├─ userController.js
+ │   ├─ categoryController.js
+ │   └─ productController.js
  │
  ├─ docs/
+ │   └─ api.js
  │
  ├─ middleware/
+ │   └─ auth.js
  │
  ├─ models/
  │   ├─ migrations/
+ │   │   ├─ 001-create-users.js
+ │   │   ├─ 002-create-categories.js
+ │   │   ├─ 003-create-products.js
+ │   │   ├─ 004-create-product-images.js
+ │   │   ├─ 005-create-product-options.js
+ │   │   └─ 006-create-product-categories.js
+ │   │
  │   ├─ associations.js
- │   └─ ...
+ │   ├─ index.js
+ │   ├─ user.js
+ │   ├─ category.js
+ │   ├─ product.js
+ │   ├─ productImage.js
+ │   └─ productOption.js
  │
  ├─ routes/
+ │   ├─ userRoutes.js
+ │   ├─ categoryRoutes.js
+ │   └─ productRoutes.js
  │
  ├─ services/
  │
  ├─ app.js
  └─ server.js
 
-Padrão Arquitetural
+📡 Endpoints Principais
 
-O projeto segue o padrão MVC + Services, separando:
+Usuário
+Método	Rota
+POST	/v1/user
+GET	/v1/user/:id
+PUT	/v1/user/:id
+DELETE	/v1/user/:id
+POST	/v1/user/token
+
+Categoria
+Método	Rota
+GET	/v1/category/search
+GET	/v1/category/:id
+POST	/v1/category
+PUT	/v1/category/:id
+DELETE	/v1/category/:id
+
+Produto
+Método	Rota
+GET	/v1/product/search
+GET	/v1/product/:id
+POST	/v1/product
+PUT	/v1/product/:id
+DELETE	/v1/product/:id
+🧠 Arquitetura
+
+Padrão MVC + Services:
 
 Routes → Endpoints
 
@@ -95,96 +168,14 @@ Controllers → Entrada e saída de dados
 
 Services → Regras de negócio
 
-Models → Estrutura do banco
+Models → Banco de dados
 
 Middleware → Autenticação JWT
 
 Config → Banco, Swagger e Migrations
 
-Documentação da API
+👩‍💻 Desenvolvido por
 
-A documentação interativa está disponível via Swagger:
+Samara Valentina da Silva
 
-http://localhost:3000/docs
-
-
-É possível testar todos os endpoints diretamente pelo navegador.
-
-Autenticação
-
-A API utiliza JWT (Bearer Token).
-
-Fluxo:
-
-Criar usuário
-
-Gerar token em /v1/user/token
-
-Clicar em Authorize no Swagger
-
-Inserir o token:
-
-Bearer SEU_TOKEN_AQUI
-
-Status Codes Utilizados
-
-200 → Sucesso
-
-201 → Criado com sucesso
-
-204 → Sem conteúdo (update/delete)
-
-400 → Dados inválidos
-
-401 → Não autorizado
-
-404 → Não encontrado
-
-Como Rodar o Projeto
-1. Clonar o repositório
-git clone URL_DO_REPOSITORIO
-
-2. Instalar dependências
-npm install
-
-3. Criar arquivo .env
-
-Exemplo:
-
-PORT=3000
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=senha
-DB_NAME=backend
-JWT_SECRET=segredo
-
-4. Rodar migrations
-node src/config/migrate.js
-
-5. Iniciar servidor
-npm run dev
-
-Testes
-
-Os testes podem ser realizados diretamente pelo Swagger UI.
-
-Diferenciais do Projeto
-
-Arquitetura MVC organizada
-
-Autenticação JWT
-
-Documentação Swagger
-
-Status Codes corretos
-
-Upload de imagens
-
-Migrations de banco
-
-Projeto desenvolvido individualmente
-
-Autor
-
-Desenvolvido por Samara Valentina da Silva
-Projeto acadêmico — Curso Geração Tech 3.0
+Projeto desenvolvido individualmente como prática de Back-end no Geração Tech 3.0.
