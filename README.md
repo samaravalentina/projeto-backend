@@ -61,7 +61,7 @@ Fluxo:
 
 ## 📚 Documentação da API
 
-Swagger disponível em:http://localhost:3000/docs
+Swagger disponível em: http://localhost:3000/docs
 
 ---
 
@@ -69,7 +69,7 @@ Swagger disponível em:http://localhost:3000/docs
 
 ### 1. Clonar o repositório
 
-git clone https://github.com/seuusuario/projeto-backend.git
+git clone https://github.com/samaravalentina/projeto-backend.git
 
 Instalar dependências
 npm install
