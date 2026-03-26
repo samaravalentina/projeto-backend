@@ -1,6 +1,6 @@
 # Projeto Backend API
 
-API REST desenvolvida em **Node.js + Express** para gerenciamento de **Usuários, Categorias e Produtos**, com autenticação JWT, upload de imagens e documentação interativa via Swagger.
+API REST desenvolvida em **Node.js + Express** para gerenciamento de **Usuários, Categorias e Produtos**, com autenticação JWT e documentação interativa via Swagger.
 
 Projeto desenvolvido individualmente como prática de Back-end no programa **Geração Tech 3.0**.
 
